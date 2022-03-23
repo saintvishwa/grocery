@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useHistory , useLocation } from 'react-router-dom';
 import './App.css';
 import './bootstrap.min.css';
 
@@ -8,7 +7,8 @@ const Home = () => {
 
     const [orderList,setOrderList] = useState([]);
     const [buyerOrder,setbuyerOrder] = useState(0);
-    const [checkbox,setCheckBox] = useState(false);
+    const [searchProduct,setProduct] = useState('');
+    const [searchId,setID] = useState('');
    // const [newOrderList,setNewList] = useState([]);
 
     useEffect(() =>{
@@ -24,16 +24,6 @@ const Home = () => {
         });
     };
 
-   /* const selectOrder = (id) => {
-        axios.post(`http://localhost:8000/update/($id)`);
-    };
-
-    const saveDraft = () => {
-        axios.post("http://localhost:8000/save",{
-            newOrderList: orderList
-        });
-    };*/
-
     return (
         <div className='App'>
             <h4 className='page-header'>BUYER DASHBOARD</h4>
@@ -41,13 +31,23 @@ const Home = () => {
             <form className='form row'>
                 <div className='col col-sm-4'>
 
-                    <input className='form-control' type="search" placeholder='Search By SKUID'/>
-                    <input className='form-control' type="search" placeholder='Search By PRODUCT NAME'/>
-                    <button type='submit' className='btn btn-dark'>Search</button>
-                </div>
-            </form>
+                    <input className='form-control' type="search" placeholder='Search By SKUID' onChange={(event) =>{
+                        setID(event.target.value);
+                    }}/>
 
-            { orderList.map((val,key) => {
+                    <input className='form-control' type="search" placeholder='Search By PRODUCT NAME' onChange={(event) =>{
+                        setProduct(event.target.value);
+                    }}/>
+                </div>
+            </form><br/>
+
+            { orderList.filter((val) => {
+                if(searchProduct === '' && searchId === '') {
+                    return val;
+                } else if(val.productName.toLowerCase().includes(searchProduct.toLowerCase())) {
+                    return val;
+                }
+            }).map((val,key) => {
                 return(
                     <div key={key} className="orders">
                         <table className='table table-secondary table-bordered table-hover'>
@@ -69,9 +69,7 @@ const Home = () => {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="checkbox" onChange={(event) => {
-                                        setCheckBox(event.target.value);
-                                    }}/></td>
+                                    <td><input type="checkbox"/></td>
                                     <td>{val.date}</td>
                                     <td>{val.skuid}</td>
                                     <td>{val.orderid}</td>
