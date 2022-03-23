@@ -6,7 +6,7 @@ import './bootstrap.min.css';
 const Home = () => {
 
     const [orderList,setOrderList] = useState([]);
-    const [buyerOrder,setbuyerOrder] = useState(0);
+    const [buyerOrder,setbuyerOrder] = useState('');
     const [searchProduct,setProduct] = useState('');
     const [searchId,setID] = useState('');
    // const [newOrderList,setNewList] = useState([]);
