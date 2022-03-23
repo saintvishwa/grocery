@@ -25,11 +25,13 @@ const orderSchema = new mongoose.Schema({
     },
     skuid:{
         type:"String",
-        required:true
+        required:true,
+        unique:true
     },
     orderid:{
         type:"String",
-        required:true
+        required:true,
+        unique:true
     },
     productName:{
         type:"String",
