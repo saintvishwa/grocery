@@ -47,6 +47,10 @@ const Home = () => {
                 } else if(val.productName.toLowerCase().includes(searchProduct.toLowerCase())) {
                     return val;
                 }
+            }).filter((val) => {
+                if(val.skuid.toLowerCase().includes(searchId.toLowerCase())) {
+                    return val;
+                }
             }).map((val,key) => {
                 return(
                     <div key={key} className="orders">
