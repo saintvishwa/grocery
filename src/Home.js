@@ -10,7 +10,7 @@ const Home = () => {
     const [searchProduct,setProduct] = useState('');
     const [searchId,setID] = useState('');
    // const [newOrderList,setNewList] = useState([]);
-
+//updated changes
     useEffect(() =>{
         axios.get("http://localhost:8000").then((response)=>{
             setOrderList(response.data);
