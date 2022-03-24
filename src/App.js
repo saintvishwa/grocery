@@ -19,12 +19,6 @@ function App() {
               <Route path="/add">
                 <AddOrder/>
               </Route>
-              <Route path="/edit">
-                <Edit/>
-              </Route>
-              <Route path="/delete">
-                <Delete/>
-              </Route>
             </div>
           </Switch>
         </div>
