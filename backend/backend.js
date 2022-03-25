@@ -105,3 +105,10 @@ app.put("/update",(req,res) => {
         console.log("Error updating:"+error);
     }
 });
+//Deleting a value
+app.delete("/delete/:arrayIds",(req,res) => {
+    const ids = req.params.arrayIds;
+    ids.forEach((ids) => {
+        orderModel.findByIdAndRemove(ids).exec(); 
+    });
+});
