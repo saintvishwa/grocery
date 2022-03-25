@@ -96,7 +96,8 @@ const Home = () => {
             }
             <button className='btn btn-primary' type='submit'>Save Draft</button>
             <a href='/add' className='btn btn-primary'>Add Order</a>
-            <a href='/edit' className='btn btn-primary'>Edit order</a>
+//             <a href='/edit' className='btn btn-primary'>Edit order</a>
+            <h1>hello<h1>
             <a href='/delete' className='btn btn-primary'>Delete Order</a>
             <button className='btn btn-primary' type='submit'>Logout</button>
         </div>
