@@ -70,6 +70,7 @@ app.get('/', (req, res) => {
         if (error) {
             console.log("Display Error:" + error);
         }
+
         res.send(result);
     });
 });
@@ -107,6 +108,30 @@ app.delete("/delete/:arrayIds", async(req, res) => {
         orderModel.findByIdAndRemove(element).exec();
         console.log("Record Deleted");
     });
+
+});
+//update items 
+app.post("/update/:arrayIds&:arrayOds", async(req, res) => {
+    var data1 = req.params.arrayIds;
+    var data2 = req.params.arrayOds;
+    let arr1 = data1.split(",");
+    let arr2 = data2.split(",");
+
+    console.log(arr1);
+    console.log(arr2);
+
+
+    for (let i = 0; i < arr1.length; i++) {
+        orderModel.findByIdAndUpdate(arr1[i], { buyerOrder: arr2[i] },
+            function(err, docs) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log("Updated User : ", docs);
+                }
+            });
+    }
+
 
 });
 
