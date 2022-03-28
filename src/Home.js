@@ -7,7 +7,9 @@ import './bootstrap.min.css';
 const Home = () => {
 
     const [orderList,setOrderList] = useState([]);
-    const [buyerOrder,setbuyerOrder] = useState('');
+    const [buyerOrder,setbuyerOrder] = useState("");
+    const [buyerOrder2,setbuyerOrder2] = useState([]);
+
     const [searchProduct,setProduct] = useState('');
     const [searchId,setID] = useState('');
    // const [newOrderList,setNewList] = useState([]);
@@ -20,7 +22,8 @@ const Home = () => {
                         {...d, select:false })
                     
                     );
-                    
+                   
+                    console.log(list2);
                    setOrderList(list2);
         
             });
@@ -60,6 +63,39 @@ const Home = () => {
             id:id
         });
     };
+
+// update data after submit
+const updateData =() =>{
+        let arrayIds = [];
+        let arrayOds = [];
+        let array = [];
+
+        orderList.forEach(d => {
+            if(d.select) {
+                
+                let obj = {};
+                obj.id = d._id;
+                arrayIds.push(d._id);
+                arrayOds.push(d.buyerOrder);
+                obj.buyerOrder = d.buyerOrder;
+                array.push(JSON.stringify(obj));
+                 
+            }
+        });
+        console.log(arrayIds);
+        console.log(arrayOds);
+
+
+//api for delete the data in database 
+
+         axios.post(`http://localhost:8000/update/${arrayIds}&${arrayOds}`).then((response) => {
+            if(response.status == 200) {
+                //document.getElementById('delete').innerHTML = 'Order Deleted Successfully';
+            }
+        }).catch(error => 
+            alert(error)
+        ); 
+    }
 
     return (
         <div className='App'>
@@ -105,8 +141,7 @@ const Home = () => {
                                     <th>Store 2 Order</th>
                                     <th>Store 3 Order</th>
                                     <th>Buyer Order</th>
-                                    <th>Actions</th>
-                                </tr>
+                               </tr>
                             </thead>
                             <tbody>
                                 <tr>
@@ -132,9 +167,14 @@ const Home = () => {
                                     <td>{val.store2order}</td>
                                     <td>{val.store3order}</td>
                                     <td><input type="number" value={val.buyerOrder} required onChange={(event) => {
-                                        setbuyerOrder(event.target.value);
+                                        let od = event.target.value;
+                                        var list4 =  orderList.map((d) => {
+                                            if(d._id==val._id){ d.buyerOrder = od;}
+                                            return d;
+                                            
+                                        });
+                                        setOrderList(list4);
                                     }}/></td>
-                                    <td><button className='btn btn-primary' type='submit' onClick={() => updateOrder(val._id)}>Submit Order</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -146,7 +186,8 @@ const Home = () => {
             <a href='/add' className='btn btn-primary'>Add Order</a>
             <a href='/edit' className='btn btn-primary'>Edit order</a>
             <button type='submit' className='btn btn-primary' onClick={deleteId}>Delete</button>
-            <button className='btn btn-primary' type='submit'>Logout</button>
+            <button className='btn btn-primary'  type='submit'>Logout</button>
+            <button className='btn btn-primary'  type='submit' onClick={updateData}>Submit</button>
         </div>
       );
 }
