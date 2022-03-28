@@ -106,9 +106,14 @@ app.put("/update",(req,res) => {
     }
 });
 //Deleting a value
-app.delete("/delete/:arrayIds",(req,res) => {
-    const ids = req.params.arrayIds;
-    ids.forEach((ids) => {
-        orderModel.findByIdAndRemove(ids).exec(); 
+app.delete("/delete/:arrayIds",async(req,res) => {
+    
+    const ids = [];
+    ids.push(req.params.arrayIds);
+
+    ids.forEach(element => {
+        orderModel.findByIdAndRemove(element).exec(); 
+        res.send("Record Deleted");
+        console.log("Record Deleted");
     });
 });
