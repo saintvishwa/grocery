@@ -3,11 +3,12 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const { render } = require('@testing-library/react');
-
+require('dotenv').config();
+const bcrypt = require('bcrypt');
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect("mongodb+srv://srijasriram:yaariyan2@cluster0.wya1v.mongodb.net/test", {
+mongoose.connect(("mongodb+srv://srijasriram:yaariyan2@cluster0.wya1v.mongodb.net/test?authSource=admin&compressors=zlib&retryWrites=true&w=majority&ssl=true"), {
     dbName: "browser-buyer",
     useNewUrlParser: true
 }).then(() => {
@@ -16,9 +17,84 @@ mongoose.connect("mongodb+srv://srijasriram:yaariyan2@cluster0.wya1v.mongodb.net
     console.log("Error" + err);
 });
 
-app.listen(8000, function() {
+app.listen((process.env.PORT || 8000), function() {
     console.log("App listening at port 8000");
 });
+
+//----------------------login --------------------------------
+const LoginSchema = new mongoose.Schema({
+    firstName: {
+        type: "String",
+        required: true
+    },
+    lastName: {
+        type: "String",
+        required: true
+    },
+    email: {
+        type: "String",
+        required: true
+    },
+    password: {
+        type: "String",
+        required: true
+    }
+});
+const LoginModel = mongoose.model("users", LoginSchema);
+//To register a user
+app.post('/register', async(req, res) => {
+
+    const firstName = req.body.firstName,
+        lastName = req.body.lastName,
+        email = req.body.email,
+        password = req.body.password;
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        // now we set user password to hashed password
+        const hashPassword = await bcrypt.hash(password, salt);
+
+        const register = new LoginModel({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: hashPassword
+        });
+        register.save();
+        res.status(201);
+        res.send("User Registered" + register);
+        console.log("Registered:" + register);
+
+    } catch (error) {
+        console.log("Error" + error);
+    }
+});
+//to login 
+app.post("/login", (req, res) => {
+
+    const { email, password } = req.body;
+
+    try {
+        LoginModel.findOne({ email: email }, (err, user) => {
+            if (user) {
+                if (bcrypt.compareSync(password, user.password)) {
+                    res.status(201);
+                    res.send({ message: "login sucess" });
+                    console.log("Login Successful");
+                } else {
+                    res.send({ message: "wrong credentials" });
+                }
+            } else {
+                res.send("not register");
+            }
+        });
+    } catch (error) {
+        console.log("Login Error:" + error);
+    }
+});
+
+//crud operations 
+
 const orderSchema = new mongoose.Schema({
     date: {
         type: "String",
