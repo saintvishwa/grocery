@@ -96,14 +96,15 @@ const updateData =() =>{
                 arrayOds.push(d.buyerOrder);
                 obj.buyerOrder = d.buyerOrder;
                 array.push(JSON.stringify(obj));
-                 
+                
             }
         });
         console.log(arrayIds);
         console.log(arrayOds);
+        // remove checkbox after updating automatically
+        
 
-
-//api for delete the data in database 
+//api for update the data in database 
         if(arrayIds.length===0){
             alert(" Please select atleast one order!!!");
         }else{
@@ -117,6 +118,11 @@ const updateData =() =>{
             }
          
     }
+//----------------------------------------logout-----------------------
+const logout = () => {
+    //localStorage.clear();
+    window.location.href = "/login";
+};
 
 //----------------------------------------to generate pdf -----------------------------------------------
     const generatepdf =() =>{
@@ -295,14 +301,13 @@ const updateData =() =>{
             </table>
                     </div>
 
-            <div className='m-5'>
+            <div className='mb-5 mx-5 p-5 fixed-bottom'>
             <Stack direction="row" spacing={20} >
             <Button variant='contained' size='large' className='' type='submit' startIcon={<SaveIcon />} onClick={generatepdf} >Save Draft</Button>
-            <Button href='/add' size='large' variant='contained'startIcon={<AddCircleIcon />} >Add</Button>
-{/*             <Button href='/edit' size='large' variant='contained' startIcon={<EditIcon />} >EDit</Button>
- */}            <Button variant='contained' size='large' type='submit' className='' onClick={deleteId} startIcon={<DeleteIcon />}>Delete</Button>
+            <Button href='/add' size='large' variant='contained' startIcon={<AddCircleIcon />} >Add</Button>
+            <Button variant='contained' size='large' type='submit' className='' onClick={deleteId} startIcon={<DeleteIcon />}>Delete</Button>
             <Button variant='contained' size='large' className=''  type='submit' onClick={updateData} startIcon={<SendIcon />} >Submit</Button>
-            <Button variant='contained' size='large' className=''  type='submit' endIcon={<LogoutIcon />}>Logout</Button>
+            <Button  variant='contained' size='large' className=''  type='submit' endIcon={<LogoutIcon /> } onClick={logout} >Logout</Button>
             </Stack>
             </div>
         
